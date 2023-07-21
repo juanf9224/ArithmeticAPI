@@ -13,7 +13,7 @@ const username = 'test@username.com';
 afterAll(() => server.close());
 
 describe('UserController', () => {
-  describe('List', () => {
+  describe('CRUD Operations', () => {
     test('should list all users', async () => {
       const sampleSize = 3;
       const users = factories.user.buildList(sampleSize);
