@@ -27,9 +27,7 @@ describe('UserController', () => {
       expect(response.body.length).toBeGreaterThan(0);
     });
     test('should get one user', async () => {
-      const user = factories.user.build({
-        username
-      });
+      const user = factories.user.build();
       
       const newUser = await User.query().insert(user);
 
@@ -39,9 +37,7 @@ describe('UserController', () => {
       expect(response.body.username).toBe(user.username);
     });
     test('should create a user', async () => {
-      const user = factories.user.build({
-        username
-      });
+      const user = factories.user.build();
 
       const response = await request(server).post(`/${config.apiVersion}/user`).send(user);
 
@@ -49,9 +45,7 @@ describe('UserController', () => {
       expect(response.body.username).toBe(user.username);
     });
     test('should update a user', async () => {
-      const user = factories.user.build({
-        username
-      });
+      const user = factories.user.build();
       
       const newUser = await User.query().insert(user);
       
@@ -64,9 +58,7 @@ describe('UserController', () => {
       expect(response.body.status).toBe(newStatus);
     });
     test('should delete a user', async () => {
-      const user = factories.user.build({
-        username
-      });
+      const user = factories.user.build();
       
       const newUser = await User.query().insert(user);
 

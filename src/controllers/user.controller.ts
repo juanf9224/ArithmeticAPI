@@ -21,7 +21,7 @@ const getUser = async (req: Request, res: Response): Promise<Response> => {
     console.error(`Error while trying to get user with id: ${req.params.id} - message: ${error.message} - stack: ${error.stack}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
   }
-  };
+};
 
 const create = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -53,7 +53,7 @@ const remove = async (req: Request, res: Response): Promise<Response> => {
     console.error(`Error while trying to delete user - message: ${error.message} - stack: ${error.stack}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
   }
-  };
+};
   
 export const UserController = {
   list,

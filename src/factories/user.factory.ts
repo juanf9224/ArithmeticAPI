@@ -4,7 +4,7 @@ import { User } from '../models';
 import { Status } from '../constants/user.constant';
 
 export default Factory.define<User>(User.tableName).attrs({
-  username: () => `${faker.person.firstName()} ${faker.person.lastName()}`,
-  password: () => faker.string.alphanumeric(6),
+  username: () => `${faker.internet.email()}`,
+  password: () => faker.internet.password(),
   status: () => faker.helpers.enumValue(Status),
 });
