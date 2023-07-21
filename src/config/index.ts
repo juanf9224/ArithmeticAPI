@@ -16,6 +16,8 @@ interface Env {
   defaultPage: number;
   defaultPageSize: number;
   apiVersion: string;
+  appSecret: string;
+  tokenExpiresIn: number;
 }
 
 export const config: Env = {
@@ -27,4 +29,6 @@ export const config: Env = {
   defaultPage: 0,
   defaultPageSize: 10,
   apiVersion: process.env.API_VERSION || 'v1',
+  appSecret: process.env.APP_SECRET || 'NO_SECRET',
+  tokenExpiresIn: Number(process.env.TOKEN_EXPIRES_IN) || 90000
 };
