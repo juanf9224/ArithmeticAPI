@@ -37,7 +37,7 @@ export const executeOperation = async (type: OperationType, data: OperationData<
             case OperationType.RANDOM_STRING: {
                 return await generateRandomString(data);
             }
-            default: return null;
+            default: throw new Error('Invalid operation requested');
         }
     } catch (error) {
         throw error;
