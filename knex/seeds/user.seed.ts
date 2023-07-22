@@ -15,7 +15,7 @@ const users = [
   },
   {
     id: 2,
-    name: 'doe.john@mail.com',
+    username: 'doe.john@mail.com',
     password: 'Password.1234',
     status: 'active',
     createdAt: now,
@@ -23,7 +23,7 @@ const users = [
   },
   {
     id: 3,
-    name: 'doe.doe@mail.com',
+    username: 'doe.doe@mail.com',
     password: 'Password.1235',
     status: 'active',
     createdAt: now,
