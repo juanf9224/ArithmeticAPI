@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { Record } from '../../src/models';
+import { Record } from '../../models';
 import dayjs from 'dayjs';
 
 export const up = async (knex: Knex): Promise<void> => {

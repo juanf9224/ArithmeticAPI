@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
-import { Operation } from '../../src/models';
-import { OperationType } from '../../src/constants/operation.constant';
+import { Operation } from '../../models';
+import { OperationType } from '../../constants/operation.constant';
 
 export const up = (knex: Knex): Promise<void> =>
   knex.schema.createTable(Operation.tableName, (table: Knex.TableBuilder) => {
