@@ -9,7 +9,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('operation_response').notNullable();
     table.float('amount');
     table.float('userBalance');
-    table.dateTime('date').notNullable().defaultTo(dayjs().format('YYY-MM-DDTHH:mm:ssZ[Z]'));
+    table.dateTime('date').notNullable().defaultTo(dayjs().toISOString());
     table.integer('user_id');
     table.integer('operation_id');
   });
