@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+
 export enum NodeEnv {
   TEST = 'test',
   DEV = 'development',
@@ -19,6 +20,44 @@ interface Env {
   tokenExpiresIn: number;
   randomApi: string;
   databaseUrl: string;
+  host: string;
+  dbPort: number;
+  database: string;
+  dbUser: string;
+  dbPassword: string;
+}
+
+const getDbCredentials = (env: string) => {
+console.log('env: ', process.env.APP_ENV, 'node env: ', process.env.NODE_ENV);
+  switch(env) {
+    case NodeEnv.PRODUCTION: {
+      return {
+        host: process.env.PGHOST || '',
+        dbPort: Number(process.env.PGPORT) || 5432,
+        database: process.env.PGDATABASE || 'LoanPro',
+        dbUser: process.env.PGUSER || 'postgres',
+        dbPassword: process.env.PGPASSWORD || ''
+      }
+    }
+    case NodeEnv.TEST: {
+      return {
+        host: process.env.PGHOST || 'localhost',
+        dbPort: Number(process.env.PGPORT) || 5432,
+        database: process.env.PGDATABASE || 'LoanProTest',
+        dbUser: process.env.PGUSER || 'postgres',
+        dbPassword: process.env.PGPASSWORD || 'loanprotest.123',
+      }
+    }
+    default: {
+      return {
+        host: process.env.TEST_PGHOST || 'localhost',
+        dbPort: Number(process.env.PGPORT) || 5432,
+        database: process.env.PGDATABASE || 'LoanProDev',
+        dbUser: process.env.PGUSER || 'postgres',
+        dbPassword: process.env.PGPASSWORD || 'loanprodev.123'
+      }
+    }
+  }
 }
 
 export const config: Env = {
@@ -32,4 +71,5 @@ export const config: Env = {
   tokenExpiresIn: Number(process.env.TOKEN_EXPIRES_IN) || 90000,
   randomApi: process.env.RANDOM_API || 'https://www.random.org/',  
   databaseUrl: process.env.databaseUrl || '',
+  ...getDbCredentials(process.env.NODE_ENV || 'development')
 };

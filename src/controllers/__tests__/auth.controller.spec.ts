@@ -21,7 +21,9 @@ describe('AuthController', () => {
             }
             await User.query().insert(withHashedPassword);
     
-            const response = await request(server).post(`/${config.apiVersion}/auth/login`).send({
+            const response = await request(server)
+            .post(`/${config.apiVersion}/auth/login`)
+            .send({
                 username: user.username,
                 password: user.password
             });

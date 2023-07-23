@@ -24,6 +24,7 @@ export const tokenValidator = async (req: Request, res: Response, next: NextFunc
         if (error instanceof TokenExpiredError) {
             return res.status(StatusCodes.UNAUTHORIZED).send(error.message);
         }
+        return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
     }
 };
 
@@ -39,6 +40,7 @@ export const refreshTokenValidator = async (req: Request, res: Response, next: N
         if (error.message.includes('Unauthorized') || error.message.includes('Error verifying token')) {
             return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
         } 
+        return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
     }
 };
 

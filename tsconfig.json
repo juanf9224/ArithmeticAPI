@@ -11,9 +11,10 @@
     "outDir": "build"
   },
   "include": [
-  "src/",
-  "src/**/__mocks__/*.ts",
-  "src/**/*.spec.ts",
+    "src/",
+    "src/**/__mocks__/*.ts",
+    "src/**/*.spec.ts",
+    "src/setupTests.ts",
   ],
   "exclude": [
     "node_modules",

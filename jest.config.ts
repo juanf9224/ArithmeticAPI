@@ -1,4 +1,7 @@
-module.exports = {
+import { Config } from "jest";
+
+const config: Config = {
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   collectCoverage: true,
   coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
   collectCoverageFrom: [
@@ -22,3 +25,5 @@ module.exports = {
     '^src/(.*)$': '<rootDir>/src/$1',
   },
 };
+
+export default config;

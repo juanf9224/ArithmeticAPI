@@ -20,19 +20,31 @@ export default {
   development: {
     ...defaultKnexConfig,
     connection: { 
-      databaseUrl: config.databaseUrl,
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword
  },
   },
   test: {
     ...defaultKnexConfig,
     connection: { 
-      databaseUrl: config.databaseUrl,
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword
     },
   },
   production: {
     ...defaultKnexConfig,
     connection: { 
-      databaseUrl: config.databaseUrl,
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword
     },
   },
 };
