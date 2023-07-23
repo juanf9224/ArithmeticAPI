@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { User } from '../../src/models';
+import { User } from '../../models';
 
 export const up = (knex: Knex): Promise<void> =>
   knex.schema.createTable(User.tableName, (table: Knex.TableBuilder) => {

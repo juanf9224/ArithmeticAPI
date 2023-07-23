@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+export FORCE_COLOR=0
+echo "running pre-commit hooks FORCE COLOR => \"$FORCE_COLOR\""
+yarn build
+npx lint-staged@12.5.0
+

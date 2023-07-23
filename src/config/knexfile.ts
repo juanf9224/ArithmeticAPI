@@ -1,4 +1,4 @@
-import { config } from './src/config';
+import { config } from '.';
 import * as path from 'path';
 import objection from 'objection';
 
@@ -6,13 +6,14 @@ const defaultKnexConfig = {
   client: 'sqlite3',
   migrations: {
     tableName: 'knex_migrations',
-    directory: path.resolve('knex/migrations'),
+    directory: path.resolve('./db/migrations'),
   },
   seeds: {
-    directory: path.resolve('knex/seeds'),
+    tableName: 'knex_seeds',
+    directory: path.resolve('./db/seeds'),
   },
   ...objection.knexSnakeCaseMappers(),
-  useNullAsDefault: true,
+  useNullAsDefault: true, // Required for SQLite
 };
 
 export default {
