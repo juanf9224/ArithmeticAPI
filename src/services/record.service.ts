@@ -21,13 +21,32 @@ export const getUserBalanceByUserId = async (userId: number) => {
 
 export const listAllRecords = async (userId: number, meta: IMeta) => {
     try {
-        const page = await Record.query().where({
-            user_id: userId
-        }).orderBy(
-            meta.orderBy || 'id',
-            meta.sortBy || 'desc'
-        ).page(meta.page, meta.itemsPerPage);
-        return page;
+
+        if (meta?.search) {
+            return await Record.query()
+            .where({
+                user_id: userId
+            })
+            .andWhere({
+                operation_id: meta.search
+            })
+            .orWhere({
+                operationResponse: meta.search
+            })
+            .orWhere({
+                amount: meta.search
+            })
+            .orWhere({
+                userBalance: meta.search
+            })
+            .orderBy( meta.orderBy || 'id', meta.sortBy || 'desc')
+            .page(meta.page, meta.itemsPerPage);
+        }
+         
+        return await Record.query()
+        .where({ user_id: userId})
+        .orderBy(meta.orderBy || 'id', meta.sortBy || 'desc')
+        .page(meta.page, meta.itemsPerPage);
     } catch (error: any) {
 
     }

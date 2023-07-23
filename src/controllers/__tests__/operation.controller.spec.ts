@@ -41,7 +41,7 @@ describe('OperationController', () => {
                 valueA: 5020.65,
                 valueB: 325720.55
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.ADDITION,
                 data
             });
@@ -76,7 +76,7 @@ describe('OperationController', () => {
                 valueA: 5000,
                 valueB: 1000
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.SUBSTRACTION,
                 data
             });
@@ -111,7 +111,7 @@ describe('OperationController', () => {
                 valueA: 10,
                 valueB: 100
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.MULTIPLICATION,
                 data
             });
@@ -146,13 +146,47 @@ describe('OperationController', () => {
                 valueA: 150,
                 valueB: 15
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.DIVISION,
                 data
             });
     
             expect(response.status).toBe(StatusCodes.OK);
             expect(response.body.data).toBe(data.valueA / data.valueB);
+        });
+        test('should calculate square root operation', async () => {
+            const user = factories.user.build({
+                status: Status.ACTIVE
+            });
+            const dbUser = await User.query().insert(user);
+
+            const record1 = factories.record.build({
+                user_id: Number(dbUser.id),
+                userBalance: 200
+            });
+            const record2 = factories.record.build({
+                user_id: Number(dbUser.id),
+                userBalance: 200
+            });
+
+            await Record.query().insert(record1);
+            await Record.query().insert(record2);
+            
+            const operation = factories.operation.build({
+                type: OperationType.SQUARE_ROOT,
+            });
+            await Operation.query().insert(operation);
+    
+            const data = {
+                valueA: 80
+            };
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
+                type: OperationType.SQUARE_ROOT,
+                data
+            });
+    
+            expect(response.status).toBe(StatusCodes.OK);
+            expect(response.body.data).toBe(Math.sqrt(data.valueA));
         });
         test('should calculate random string operation', async () => {
             const user = factories.user.build({
@@ -187,7 +221,7 @@ describe('OperationController', () => {
                 mockedGeneratedString
             )
 
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.RANDOM_STRING,
                 data
             });
@@ -196,41 +230,7 @@ describe('OperationController', () => {
             expect(response.body.data).toBe(mockedGeneratedString);
             expect(response.body.data.length).toBe(data.valueA);
         });
-
-        test('should calculate square root operation', async () => {
-            const user = factories.user.build({
-                status: Status.ACTIVE
-            });
-            const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
-            
-            const operation = factories.operation.build({
-                type: OperationType.SQUARE_ROOT,
-            });
-            await Operation.query().insert(operation);
-    
-            const data = {
-                valueA: 80
-            };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
-                type: OperationType.SQUARE_ROOT,
-                data
-            });
-    
-            expect(response.status).toBe(StatusCodes.OK);
-            expect(response.body.data).toBe(Math.sqrt(data.valueA));
-        });
+        
     })
 
     describe('Calculate errors', () => {
@@ -260,7 +260,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.ADDITION,
                 data
             });
@@ -293,7 +293,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.SUBSTRACTION,
                 data
             });
@@ -326,7 +326,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.MULTIPLICATION,
                 data
             });
@@ -359,41 +359,8 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.DIVISION,
-                data
-            });
-    
-            expect(response.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR);
-        });
-        test('should fail to calculate square root operation when missing valueA', async () => {
-            const user = factories.user.build({
-                status: Status.ACTIVE
-            });
-            const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
-            
-            const operation = factories.operation.build({
-                type: OperationType.SQUARE_ROOT,
-            });
-            await Operation.query().insert(operation);
-    
-            const data = {
-                valueA: 0,
-            };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
-                type: OperationType.SQUARE_ROOT,
                 data
             });
     
@@ -425,13 +392,45 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/calculate/${dbUser.id}`).send({
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
                 type: OperationType.ADDITION,
                 data
             });
     
             expect(response.status).toBe(StatusCodes.FORBIDDEN);
             expect(response.text).toBe("User doesn't have enough balance for this request");
+        });
+        test('should fail to calculate square root operation when missing valueA', async () => {
+            const user = factories.user.build({
+                status: Status.ACTIVE
+            });
+            const dbUser = await User.query().insert(user);
+
+            const record1 = factories.record.build({
+                user_id: Number(dbUser.id),
+                userBalance: 200
+            });
+            const record2 = factories.record.build({
+                user_id: Number(dbUser.id),
+                userBalance: 200
+            });
+
+            await Record.query().insert(record1);
+            await Record.query().insert(record2);
+            
+            const operation = factories.operation.build({
+                type: OperationType.SQUARE_ROOT,
+            });
+            await Operation.query().insert(operation);
+    
+            const data = {
+            };
+            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`).send({
+                type: OperationType.SQUARE_ROOT,
+                data
+            });
+    
+            expect(response.status).toBe(StatusCodes.BAD_REQUEST);
         });
     })
 });

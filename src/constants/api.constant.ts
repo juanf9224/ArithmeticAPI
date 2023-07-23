@@ -5,4 +5,5 @@ export interface IMeta {
     orderBy: string;
     page: number;
     itemsPerPage: number;
+    search: string;
 }

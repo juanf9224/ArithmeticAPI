@@ -3,7 +3,6 @@ import { config } from "../../config";
 import factories from "../../factories";
 import { User } from "../../models";
 import { Record } from "../../models/record.model";
-import { getUserBalanceByUserId } from "../../services/record.service";
 import request from 'supertest';
 
 const server = app.listen();
@@ -23,7 +22,6 @@ describe('RecordController', () => {
             const savedRecord = await Record.query().insert(record1);
 
             const response = await request(server).get(`/${config.apiVersion}/records/${newUser.id}/${savedRecord.id}`);
-            console.log(response.body);
             expect(response.body.id).toBe(savedRecord.id);
         })
 

@@ -13,7 +13,7 @@ export const jwtSign = <T>(data: Partial<T>, expirationTime?: number) => {
         const secret = Buffer.from(config.appSecret, 'base64');
         return sign(
                     {
-                        
+                        user: data,
                         expiresIn: expirationTime || Number(config.tokenExpiresIn)
                     },
                     secret,
@@ -32,7 +32,6 @@ export const validatePayloadExpiration = (payload: any) => {
 
 export const verifyToken = async (token: string): Promise<string | JwtPayload> => {
     try {
-        console.log(`Verifying token: ${token}`);
         let payload: any | JwtPayload;
         const secret = Buffer.from(config.appSecret, 'base64');
         payload = verify(token, secret);

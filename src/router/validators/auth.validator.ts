@@ -7,19 +7,38 @@ import { validateRequest } from "../../helpers/validate-request";
 
 export const tokenValidator = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.headers?.authorization?.split(' ')[1] || req.body?.token;
+        const { cookies } = req;
+        const token = cookies.token;
+        if (!token) {
+            throw new Error('Unauthorized');
+        }
         const payload = await verifyToken(token);
         if (!payload) {
             throw new Error('Unauthorized');
-        } else {
-            next();
         }
+        next();
     } catch (error: any) {
-        if (error.includes('Unauthorized')) {
-            res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
-        } else if (error instanceof TokenExpiredError) {
-            res.status(StatusCodes.UNAUTHORIZED).send(error.message);
+        if (error.message.includes('Unauthorized') || error.message.includes('Error verifying token')) {
+            return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
+        } 
+        if (error instanceof TokenExpiredError) {
+            return res.status(StatusCodes.UNAUTHORIZED).send(error.message);
         }
+    }
+};
+
+export const refreshTokenValidator = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { cookies } = req;
+        const token = cookies['Refresh-Token'];
+        if (!token) {
+            throw new Error('Unauthorized');
+        }
+        next();
+    } catch (error: any) {
+        if (error.message.includes('Unauthorized') || error.message.includes('Error verifying token')) {
+            return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
+        } 
     }
 };
 
