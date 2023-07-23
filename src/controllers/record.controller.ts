@@ -6,13 +6,13 @@ import { OrderByDirection } from "objection";
 const list = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { userId } = req.params;
-        const { page, itemsPerPage, orderBy, sortBy } = req.query;
-        console.log(userId, page, itemsPerPage, sortBy, orderBy);
+        const { page, itemsPerPage, orderBy, sortBy, search } = req.query;
         const recordsPage = await listAllRecords(Number(userId), {
             page: Number(page),
             itemsPerPage: Number(itemsPerPage),
             orderBy: String(orderBy),
-            sortBy: String(sortBy) as OrderByDirection
+            sortBy: String(sortBy) as OrderByDirection,
+            search: String(search)
         });
         return res.status(StatusCodes.OK).send(recordsPage);
     } catch (error: any) {

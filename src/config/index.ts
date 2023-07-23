@@ -2,9 +2,10 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-enum NodeEnv {
+export enum NodeEnv {
   TEST = 'test',
   DEV = 'development',
+  PRODUCTION = 'production'
 }
 
 interface Env {

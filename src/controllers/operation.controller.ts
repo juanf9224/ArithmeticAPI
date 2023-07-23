@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { executeOperation, findOperationByType } from '../services/operation.service';
+import { executeOperation, findOperationByType, listAllOperations } from '../services/operation.service';
 import { findUser } from '../services/user.service';
 import { Status } from '../constants/user.constant';
 import { getUserBalanceByUserId, storeNewOperationRecord } from '../services/record.service';
@@ -10,7 +10,6 @@ const calculate = async (req: Request, res: Response): Promise<Response> => {
     const { userId } = req.params;
     const { type, data } = req.body;
     const user = await findUser(Number(userId));
-
     if (user.status === Status.INACTIVE) {
       throw new Error('Inactive user');
     }
@@ -24,7 +23,7 @@ const calculate = async (req: Request, res: Response): Promise<Response> => {
 
     const result = await executeOperation(op.type, data);
 
-    const record = await storeNewOperationRecord(result, op, Number(userId), userBalance);
+    await storeNewOperationRecord(result, op, Number(userId), userBalance);
 
     return res.status(StatusCodes.OK).json({ data: result });
 
@@ -49,6 +48,17 @@ const calculate = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+const list = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const operations = await listAllOperations();
+  return res.status(StatusCodes.OK).send(operations);
+  } catch (error: any) {
+    console.error(`Error while trying to get operations - message: ${error.message} - stack: ${error.stack}`);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+};
+
 export const OperationController = {
   calculate,
+  list
 };
