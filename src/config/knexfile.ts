@@ -50,7 +50,7 @@ export default {
       database: config.database,
       user: config.dbUser,
       password: config.dbPassword,
-      ssl: true,
+      ssl: { rejectUnauthorized: false },
     } as Knex.PgConnectionConfig,
   },
 };
