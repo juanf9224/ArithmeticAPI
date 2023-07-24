@@ -38,7 +38,7 @@
     "db:reset:prod": "cross-env NODE_ENV=production yarn db:rollback:all:prod && yarn db:setup:prod",
     "db:setup:prod": "cross-env NODE_ENV=production yarn db:migrate:prod && yarn db:seed:prod",
     "prepare": "husky install",
-    "heroku-cleanup": "yarn db:setup:prod"
+    "heroku-postbuild": "yarn db:setup:prod"
   },
   "keywords": [],
   "author": "",
