@@ -14,7 +14,7 @@ const options: Options = {
     openapi: '3.0.0',
     definition,
     // Paths to files containing OpenAPI definitions
-    apis: ['**/**/*.{ts|js}', '**/*.{js|ts}', './src/router/*.{js|ts}'],
+    apis: [`${__dirname}/src/router/*.{ts|js}`, `build/router/*.js`],
 };
 
 export default swaggerJSDoc(options);

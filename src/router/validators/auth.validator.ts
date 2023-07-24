@@ -18,6 +18,7 @@ export const tokenValidator = async (req: Request, res: Response, next: NextFunc
         }
         next();
     } catch (error: any) {
+        console.error(`Could not validate authorization token - message: ${error.message} - stack: ${error.stack}`);
         if (error.message.includes('Unauthorized') || error.message.includes('Error verifying token')) {
             return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
         } 

@@ -59,13 +59,13 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { username, password } = req.body;
         const { user, token, refreshToken } = await loginService(username, password);
-        
         const serialized = serialize('token', token, {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
             sameSite: 'strict',
             maxAge: config.tokenExpiresIn,
-            path: '/'
+            path: '/',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1'
         })
 
         const serializedRefreshToken = serialize('refreshToken', refreshToken, {
@@ -73,9 +73,10 @@ const login = async (req: Request, res: Response): Promise<Response> => {
             secure: config.env === NodeEnv.PRODUCTION,
             sameSite: 'strict',
             maxAge: config.refreshTokenExpiresIn,
-            path: '/'
+            path: '/',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1'
         })
-        res.setHeader('Set-Cookie', serialized);
+        res.setHeader('Authorization', serialized);
         res.setHeader('Refresh-Token', serializedRefreshToken);
         return res.status(StatusCodes.OK).json(user);
     } catch (error: any) {
@@ -232,7 +233,8 @@ const refreshToken = async (req: Request, res: Response): Promise<Response> => {
             secure: config.env === NodeEnv.PRODUCTION,
             sameSite: 'strict',
             maxAge: config.tokenExpiresIn,
-            path: '/'
+            path: '/',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1'            
         });
         res.setHeader('Authorization', serialized);        
         return res.status(StatusCodes.OK).send(decoded.user);
