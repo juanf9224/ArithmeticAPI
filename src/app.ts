@@ -4,14 +4,16 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './swagger-docs';
 import router from './router';
 import cors from "cors";
+
 const app = express();
 
 addExpressMiddleware(app);
 app.disable('etag');
 app.use(cors({
     credentials: true,
-    origin: '*',
-}))
+    optionsSuccessStatus: 200,
+    exposedHeaders: 'Set-Cookie',
+}));
 app.use(
     "/v1/api-docs",
     swaggerUi.serve,

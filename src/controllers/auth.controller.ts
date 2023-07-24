@@ -62,21 +62,21 @@ const login = async (req: Request, res: Response): Promise<Response> => {
         const serialized = serialize('token', token, {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: 'strict',
+            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
             maxAge: config.tokenExpiresIn,
-            path: '/',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1'
+            path: '/v1',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
         })
 
         const serializedRefreshToken = serialize('refreshToken', refreshToken, {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: 'strict',
+            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
             maxAge: config.refreshTokenExpiresIn,
-            path: '/',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1'
+            path: '/v1',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
         })
-        res.setHeader('Authorization', serialized);
+        res.setHeader('Set-Cookie', serialized);
         res.setHeader('Refresh-Token', serializedRefreshToken);
         return res.status(StatusCodes.OK).json(user);
     } catch (error: any) {
@@ -149,18 +149,20 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
         const serialized = serialize('token', '', {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: 'strict',
+            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
             maxAge: -1,
-            path: '/'
+            path: '/v1',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
         })
         const serializedRefreshToken = serialize('refreshToken', '', {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: 'strict',
+            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
             maxAge: -1,
-            path: '/'
+            path: '/v1',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
         })
-        res.setHeader('Authorization', serialized);
+        res.setHeader('Set-Cookie', serialized);
         res.setHeader('Refresh-Token', serializedRefreshToken);
         return res.status(StatusCodes.OK).send({
             status: 'success',
@@ -231,12 +233,12 @@ const refreshToken = async (req: Request, res: Response): Promise<Response> => {
         const serialized = serialize('token', accessToken, {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: 'strict',
+            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
             maxAge: config.tokenExpiresIn,
-            path: '/',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1'            
+            path: '/v1',
+            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'           
         });
-        res.setHeader('Authorization', serialized);        
+        res.setHeader('Set-Cookie', serialized);        
         return res.status(StatusCodes.OK).send(decoded.user);
     } catch (error: any) {
         console.error(`Error while trying to get user with id: ${req.params.id} - message: ${error.message} - stack: ${error.stack}`);

@@ -32,7 +32,7 @@ export const tokenValidator = async (req: Request, res: Response, next: NextFunc
 export const refreshTokenValidator = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { cookies } = req;
-        const token = cookies['refreshToken'];
+        const token = cookies.refreshToken;
         if (!token) {
             throw new Error('Unauthorized');
         }
