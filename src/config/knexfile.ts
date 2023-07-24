@@ -43,12 +43,14 @@ export default {
   },
   production: {
     ...defaultKnexConfig,
-    connection: { 
+    connection: {
+      connectionString: config.databaseUrl,
       host: config.host,
       port: config.dbPort,
       database: config.database,
       user: config.dbUser,
-      password: config.dbPassword
-    },
+      password: config.dbPassword,
+      ssl: true,
+    } as Knex.PgConnectionConfig,
   },
 };
