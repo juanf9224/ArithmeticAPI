@@ -1,15 +1,19 @@
-import { config } from '.';
+import { NodeEnv, config } from '.';
 import * as path from 'path';
 import objection from 'objection';
+import { Knex } from 'knex';
 
-const defaultKnexConfig = {
+console.log(config.env);
+
+const defaultKnexConfig: Knex.Config = {
   client: 'pg',
   migrations: {
+    extension: config.env === NodeEnv.PRODUCTION ? 'js': 'ts',
     tableName: 'knex_migrations',
     directory: path.resolve('../db/migrations'),
   },
   seeds: {
-    tableName: 'knex_seeds',
+    extension: config.env === NodeEnv.PRODUCTION ? 'js': 'ts',
     directory: path.resolve('../db/seeds'),
   },
   ...objection.knexSnakeCaseMappers(),
