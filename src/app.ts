@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import addExpressMiddleware from './config/application-middlewares';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './swagger-docs';
@@ -15,6 +15,10 @@ app.use(cors({
     exposedHeaders: 'set-cookie',
     origin: config.clientHost,
 }));
+app.use((req: Request, res: Response, next: NextFunction) => {    
+    res.setHeader('Access-Control-Allow-Origin', config.clientHost);
+    next();
+})
 app.use(
     "/v1/api-docs",
     swaggerUi.serve,
