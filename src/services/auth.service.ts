@@ -20,7 +20,7 @@ export const loginService = async (username: string, password: string) => {
                 status
             },
             token: jwtSign({ id, username: user.username, status: user.status }),
-            refreshToken: jwtSign({ id, username: user.username, status: user.status }, config.tokenExpiresIn * 2)
+            refreshToken: jwtSign({ id, username: user.username, status: user.status }, config.refreshTokenExpiresIn)
         }
     } catch (error: any) {
         throw error;

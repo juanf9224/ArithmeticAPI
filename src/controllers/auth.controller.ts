@@ -3,8 +3,9 @@ import { StatusCodes } from "http-status-codes";
 import { loginService } from "../services/auth.service";
 import { serialize } from 'cookie';
 import { NodeEnv, config } from "../config";
-import { jwtSign } from "../helpers/jwt";
+import { jwtSign, verifyToken } from "../helpers/jwt";
 import jwtDecode from "jwt-decode";
+import { JwtPayload } from "jsonwebtoken";
 
 const login = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -16,15 +17,15 @@ const login = async (req: Request, res: Response): Promise<Response> => {
             secure: config.env === NodeEnv.PRODUCTION,
             sameSite: 'strict',
             maxAge: config.tokenExpiresIn,
-            domain: 'localhost:3000'
+            path: '/'
         })
 
         const serializedRefreshToken = serialize('refreshToken', refreshToken, {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
             sameSite: 'strict',
-            maxAge: config.tokenExpiresIn * 2,
-            domain: 'localhost:3000'
+            maxAge: config.refreshTokenExpiresIn,
+            path: '/'
         })
         res.setHeader('Set-Cookie', serialized);
         res.setHeader('Refresh-Token', serializedRefreshToken);
@@ -82,26 +83,20 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
 const refreshToken = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { cookies } = req;
+        const refreshToken = cookies['refreshToken'];
 
-        const refreshToken = cookies['refresh-token'];
+        const decoded = (await verifyToken(refreshToken)) as JwtPayload;
+        const accessToken = jwtSign(decoded.user);
 
-        if (!refreshToken) {
-            return res.status(StatusCodes.UNAUTHORIZED).send({
-                status: 'error',
-                error: 'Unauthorized'
-            })
-        }
-        const serialized = serialize('refreshToken', '', {
+        const serialized = serialize('token', accessToken, {
             httpOnly: true,
             secure: config.env === NodeEnv.PRODUCTION,
             sameSite: 'strict',
-            maxAge: -1,
+            maxAge: config.tokenExpiresIn,
             path: '/'
-        })
-        res.setHeader('Refresh-Token', serialized);
-        const decoded: any = jwtDecode(refreshToken);
-        const user = jwtSign(decoded.user)
-        return res.status(StatusCodes.OK).send(user);
+        });
+        res.setHeader('Authorization', serialized);        
+        return res.status(StatusCodes.OK).send(decoded.user);
     } catch (error: any) {
         console.error(`Error while trying to get user with id: ${req.params.id} - message: ${error.message} - stack: ${error.stack}`);
         if (error.message?.toLowerCase().includes('invalid credentials')) {

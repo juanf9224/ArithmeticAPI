@@ -63,8 +63,6 @@ describe('RecordController', () => {
             const lastRecord = await Record.query().insert(record4);
             await Record.query().insert(record5);
             await Record.query().insert(record6);
-
-            console.log(await Record.query());
             const response = await request(server)
             .get(`/${config.apiVersion}/records/${newUser.id}?page=0&itemsPerPage=2&orderBy=id&sortBy=desc&search=`)
             .set('Cookie', [`token=${jwt}`]);

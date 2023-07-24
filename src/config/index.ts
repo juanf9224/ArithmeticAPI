@@ -25,10 +25,10 @@ interface Env {
   database: string;
   dbUser: string;
   dbPassword: string;
+  refreshTokenExpiresIn: number;
 }
 
 const getDbCredentials = (env: string) => {
-console.log('env: ', process.env.APP_ENV, 'node env: ', process.env.NODE_ENV);
   switch(env) {
     case NodeEnv.PRODUCTION: {
       return {
@@ -68,8 +68,9 @@ export const config: Env = {
   defaultPageSize: 10,
   apiVersion: process.env.API_VERSION || 'v1',
   appSecret: process.env.APP_SECRET || 'NO_SECRET',
-  tokenExpiresIn: Number(process.env.TOKEN_EXPIRES_IN) || 90000,
+  tokenExpiresIn: Number(process.env.TOKEN_EXPIRES_IN) || 3600,
   randomApi: process.env.RANDOM_API || 'https://www.random.org/',  
   databaseUrl: process.env.databaseUrl || '',
-  ...getDbCredentials(process.env.NODE_ENV || 'development')
+  ...getDbCredentials(process.env.NODE_ENV || 'development'),
+  refreshTokenExpiresIn: Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 86400
 };
