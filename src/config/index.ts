@@ -26,6 +26,7 @@ interface Env {
   dbUser: string;
   dbPassword: string;
   refreshTokenExpiresIn: number;
+  clientHost: string;
 }
 
 const getDbCredentials = (env: string) => {
@@ -72,5 +73,6 @@ export const config: Env = {
   randomApi: process.env.RANDOM_API || 'https://www.random.org/',  
   databaseUrl: process.env.databaseUrl || '',
   ...getDbCredentials(process.env.NODE_ENV || 'development'),
-  refreshTokenExpiresIn: Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 86400
+  refreshTokenExpiresIn: Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 86400,
+  clientHost: process.env.CLIENT_HOST || 'http://localhost:3000'
 };

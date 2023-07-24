@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { loginService } from "../services/auth.service";
 import { serialize } from 'cookie';
-import { NodeEnv, config } from "../config";
+import { config } from "../config";
 import { jwtSign, verifyToken } from "../helpers/jwt";
 import { JwtPayload } from "jsonwebtoken";
 
@@ -59,22 +59,23 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { username, password } = req.body;
         const { user, token, refreshToken } = await loginService(username, password);
+
         const serialized = serialize('token', token, {
             httpOnly: true,
-            secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: config.tokenExpiresIn,
             path: '/v1',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
+            domain: req.get('host')
         })
 
         const serializedRefreshToken = serialize('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
-            maxAge: config.refreshTokenExpiresIn,
+            secure: true,
+            sameSite: 'none',
+            maxAge: config.tokenExpiresIn,
             path: '/v1',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
+            domain: req.get('host')
         })
         res.setHeader('Set-Cookie', serialized);
         res.setHeader('Refresh-Token', serializedRefreshToken);
@@ -148,22 +149,22 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
         }
         const serialized = serialize('token', '', {
             httpOnly: true,
-            secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
-            maxAge: -1,
+            secure: true,
+            sameSite: 'none',
+            maxAge: config.tokenExpiresIn,
             path: '/v1',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
+            domain: req.get('host')
         })
         const serializedRefreshToken = serialize('refreshToken', '', {
             httpOnly: true,
-            secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
-            maxAge: -1,
+            secure: true,
+            sameSite: 'none',
+            maxAge: config.tokenExpiresIn,
             path: '/v1',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'
+            domain: req.get('host')
         })
         res.setHeader('Set-Cookie', serialized);
-        res.setHeader('Refresh-Token', serializedRefreshToken);
+        res.setHeader('Refresh-Token', serializedRefreshToken);     
         return res.status(StatusCodes.OK).send({
             status: 'success',
             message: 'Logged out'
@@ -232,11 +233,11 @@ const refreshToken = async (req: Request, res: Response): Promise<Response> => {
 
         const serialized = serialize('token', accessToken, {
             httpOnly: true,
-            secure: config.env === NodeEnv.PRODUCTION,
-            sameSite: config.env === NodeEnv.PRODUCTION ? 'none' : 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: config.tokenExpiresIn,
             path: '/v1',
-            domain: config.env === NodeEnv.PRODUCTION ? req.get('host') : '127.0.0.1:3000'           
+            domain: req.get('host')           
         });
         res.setHeader('Set-Cookie', serialized);        
         return res.status(StatusCodes.OK).send(decoded.user);
