@@ -19,34 +19,8 @@ COPY . .
 # Build the LoanPro app
 RUN yarn build
 
-# Stage 2: Setup SQLite and run the Node.js app
-FROM node:18.16.1
-
-# Install build essentials and SQLite dependencies
-RUN sudo apt-get -y update
-RUN sudo apt-get -y upgrade
-RUN apt-get update && apt-get install -y build-essential
-
-# Set the working directory inside the container
-WORKDIR /app
-
-# Setup the database
-CMD ["yarn", "db:setup"]
-
-# Stage 3: Serve the built app using `serve`
-FROM node:18.16.1
-
-# Install `serve` globally
-RUN npm install -g serve
-
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy the built app from the previous stage
+# Copy the built app from the `build` stage
 COPY --from=build /app/build ./build
 
-# Expose the port that `serve` will use (default is 5000)
-EXPOSE 5000
-
-# Start the app using `serve`
-CMD ["serve", "-s", "build"]
+# Setup the database
+CMD ["sh", "-c", "yarn db:setup && yarn start"]

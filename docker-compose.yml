@@ -7,36 +7,42 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3001:3001"
     volumes:
       - .:/app
-      - db_data:/app/db_data # Mount a volume to manage SQLite database file
+    depends_on:
+      - db
     environment:
       - NODE_ENV=production
-      - APP_PORT=3001
-      # Database
-      - DB_FILENAME=./db_data/db.sqlite3
-      - DB_TEST_FILENAME=./db_data/db.test.sqlite3
-      # API
-      - API_VERSION=v1
-      # Security
-      - APP_SECRET=jfhhfj123
-      # Random String Generator API
-      - RANDOM_API=https://www.random.org
+      - APP_PORT=$APP_PORT
+      - API_VERSION=$API_VERSION
+      - APP_SECRET=$APP_SECRET
+      - RANDOM_API=$RANDOM_API
+      - PGHOST=$PGHOST
+      - PGPORT=$PGPORT
+      - PGDATABASE=$PGDATABASE
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
     networks:
       - app_network
 
   db:
-    container_name: sqlite_db
-    image: "sqlite"
+    container_name: postgres_db
+    image: postgres:latest
     restart: unless-stopped
+    ports:
+      - "5432:5432" # Map container port 5432 to host port 5432
+    environment:
+      POSTGRES_USER: $PGUSER
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_DB: $PGDATABASE
     volumes:
-      - db_data:/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app_network
 
 volumes:
-  db_data:
+  postgres_data:
 
 networks:
   app_network:
