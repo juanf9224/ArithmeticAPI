@@ -2,6 +2,35 @@ import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import { createUser, deleteUser, findUser, listAllUsers, updateUser } from "../services/user.service";
 
+/**
+ * @swagger
+ * /list:
+ *   get:
+ *     summary: List Users
+ *     description: Get a list of all users.
+ *     tags:
+ *       - Users
+ *     responses:
+ *       '200':
+ *         description: List of users successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const list = async (req: Request, res: Response): Promise<Response> => {
     try {
       const users = await listAllUsers();
@@ -12,6 +41,47 @@ const list = async (req: Request, res: Response): Promise<Response> => {
     }
   };
 
+/**
+ * @swagger
+ * /getUser/{id}:
+ *   get:
+ *     summary: Get User
+ *     description: Get a single user by user ID.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: User successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *       '404':
+ *         description: Not Found. User not found.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: User not found
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const getUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
@@ -23,6 +93,43 @@ const getUser = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * @swagger
+ * /create:
+ *   post:
+ *     summary: Create User
+ *     description: Create a new user.
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       description: User object to be created.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: User successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const create = async (req: Request, res: Response): Promise<Response> => {
   try {
     const users = await createUser(req.body);
@@ -33,6 +140,57 @@ const create = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * @swagger
+ * /update/{id}:
+ *   put:
+ *     summary: Update User
+ *     description: Update an existing user by user ID.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to update.
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       description: User object to be updated.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: User successfully updated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *       '404':
+ *         description: Not Found. User not found.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: User not found
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const update = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
@@ -44,6 +202,31 @@ const update = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * @swagger
+ * /remove/{id}:
+ *   delete:
+ *     summary: Delete User
+ *     description: Delete an existing user by user ID.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to delete.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '204':
+ *         description: User successfully deleted.
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const remove = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;

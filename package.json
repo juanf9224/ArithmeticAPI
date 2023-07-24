@@ -14,7 +14,7 @@
     "ts-node": "cross-env NODE_OPTIONS=\"--loader=ts-node/esm --no-warnings --experimental-specifier-resolution=node\" node",
     "start": "cross-env NODE_PATH=build node build/index.js",
     "predevelop": "yarn db:migrate && yarn db:seed",
-    "dev": "nodemon",
+    "dev": "cross-env HTTPS=true NODE_ENV=development nodemon -r tsconfig-paths/register ./src/index.ts",
     "lint": "eslint src",
     "prettier": "./node_modules/.bin/prettier --write \"{src,knex}/**/*.ts\"",
     "pretest": "cross-env NODE_ENV=test yarn db:rollback:all && cross-env NODE_ENV=test yarn db:migrate",

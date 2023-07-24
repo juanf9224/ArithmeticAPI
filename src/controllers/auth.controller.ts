@@ -4,9 +4,57 @@ import { loginService } from "../services/auth.service";
 import { serialize } from 'cookie';
 import { NodeEnv, config } from "../config";
 import { jwtSign, verifyToken } from "../helpers/jwt";
-import jwtDecode from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: User Login
+ *     description: Authenticate user with username and password
+ *     tags: [Authentication]
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             example:
+ *               username: john_doe@mail.com
+ *               password: mysecret123
+ *     responses:
+ *       200:
+ *         description: User successfully logged in.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *       401:
+ *         description: Invalid Credentials.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Invalid Credentials
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const login = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { username, password } = req.body;
@@ -39,6 +87,52 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     }
 };
 
+/**
+ * @swagger
+ * /logout:
+ *   get:
+ *     summary: User Logout
+ *     description: Log out the currently authenticated user
+ *     tags:
+ *       - Authentication
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User successfully logged out.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *               example:
+ *                 status: success
+ *                 message: Logged out
+ *       401:
+ *         description: Unauthorized. No valid token found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 error:
+ *                   type: string
+ *               example:
+ *                 status: error
+ *                 error: Unauthorized
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const logout = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { cookies } = req;
@@ -80,6 +174,51 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
     }
 };
 
+/**
+ * @swagger
+ * /refreshToken:
+ *   get:
+ *     summary: Refresh Access Token
+ *     description: Refresh the access token using the provided refresh token
+ *     tags:
+ *       - Authentication
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Access token successfully refreshed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 username:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized. Invalid or expired refresh token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 error:
+ *                   type: string
+ *               example:
+ *                 status: error
+ *                 error: Unauthorized
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const refreshToken = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { cookies } = req;

@@ -27,9 +27,14 @@ export const jwtSign = <T>(data: Partial<T>, expirationTime?: number) => {
     }
 };
 
-export const validatePayloadExpiration = (payload: any) => {
-};
-
+/**
+ * Verify the authenticity of a JWT token.
+ *
+ * @param {string} token - The JWT token to verify.
+ * @returns {Promise<string | JwtPayload>} A promise that resolves to the verified payload or an error if the token is invalid.
+ * @throws {TokenExpiredError} If the token has expired.
+ * @throws {Error} If the token cannot be verified.
+ */
 export const verifyToken = async (token: string): Promise<string | JwtPayload> => {
     try {
         let payload: any | JwtPayload;

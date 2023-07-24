@@ -63,7 +63,7 @@ const getDbCredentials = (env: string) => {
 export const config: Env = {
   env: (process.env.NODE_ENV as NodeEnv) || NodeEnv.DEV,
   knexDebug: process.env.KNEX_DEBUG === 'true',
-  port: Number(process.env.PORT) || 5000,
+  port: Number(process.env.PORT) || 3001,
   defaultPage: 0,
   defaultPageSize: 10,
   apiVersion: process.env.API_VERSION || 'v1',

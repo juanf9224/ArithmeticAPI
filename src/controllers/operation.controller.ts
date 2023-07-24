@@ -5,6 +5,80 @@ import { findUser } from '../services/user.service';
 import { Status } from '../constants/user.constant';
 import { getUserBalanceByUserId, storeNewOperationRecord } from '../services/record.service';
 
+/**
+ * @swagger
+ * /calculate/{userId}:
+ *   post:
+ *     summary: Calculate Operation
+ *     description: Calculate operation for the specified user.
+ *     tags:
+ *       - Operations
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID of the user to perform the operation for.
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *             example:
+ *               type: addition
+ *               data: { "valueA": 10, "valueB": 20 }
+ *     responses:
+ *       '200':
+ *         description: Calculation successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *       '400':
+ *         description: Bad Request. Invalid request data.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Bad Request
+ *       '401':
+ *         description: Unauthorized. User is inactive.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: User not allowed to access this resource
+ *       '403':
+ *         description: Forbidden. User doesn't have enough balance for this request.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: User doesn't have enough balance for this request
+ *       '404':
+ *         description: Not Found. Operation or User not found.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Operation Not Found
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const calculate = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { userId } = req.params;
@@ -48,6 +122,38 @@ const calculate = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+
+/**
+ * @swagger
+ * /list:
+ *   get:
+ *     summary: List Operations
+ *     description: Get a list of all operations.
+ *     tags:
+ *       - Operations
+ *     responses:
+ *       '200':
+ *         description: List of operations successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *       '500':
+ *         description: Internal Server Error.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ */
 const list = async (req: Request, res: Response): Promise<Response> => {
   try {
     const operations = await listAllOperations();

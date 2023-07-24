@@ -14,7 +14,7 @@
     "src/",
     "src/**/__mocks__/*.ts",
     "src/**/*.spec.ts",
-    "src/setupTests.ts",
+    "src/setupTests.ts", "src/swagger-docs.ts",
   ],
   "exclude": [
     "node_modules",

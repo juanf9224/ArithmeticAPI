@@ -1,14 +1,13 @@
 import express, { NextFunction, Request, Response } from 'express';
 import addExpressMiddleware from './config/application-middlewares';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocs from './config/swagger-docs';
+import swaggerDocs from './swagger-docs';
 import router from './router';
 
 const app = express();
 
 addExpressMiddleware(app);
 app.disable('etag');
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -20,6 +19,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     );
     next();
 })
+app.use(
+    "/v1/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocs)
+)
 app.use(router);
 
 export default app;
