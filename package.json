@@ -30,7 +30,7 @@
     "db:seed": "yarn knex seed:run --knexfile=src/config/knexfile.ts",
     "db:reset": "yarn db:rollback:all: && yarn db:setup:",
     "db:setup": "yarn db:migrate && yarn db:seed",
-    "db:migrate:prod": "yarn knex migrate:latest --knexfile=build/config/knexfile.ts",
+    "db:migrate:prod": "yarn knex migrate:latest --knexfile=build/config/knexfile.js",
     "db:migrate:make:prod": "yarn knex migrate:make --knexfile=build/config/knexfile.js",
     "db:rollback:prod": "yarn knex migrate:rollback --knexfile=build/config/knexfile.js",
     "db:rollback:all:prod": "yarn knex migrate:rollback --all --knexfile=build/config/knexfile.js",
