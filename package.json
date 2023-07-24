@@ -64,7 +64,8 @@
     "sqlite3": "^5.1.6",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "winston": "^3.10.0"
+    "winston": "^3.10.0",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
@@ -85,7 +86,6 @@
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
-    "cross-env": "^7.0.3",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
