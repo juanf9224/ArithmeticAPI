@@ -3,29 +3,87 @@ import { StatusCodes } from "http-status-codes";
 import { getRecordByUserIdAndRecordId, listAllRecords } from "../services/record.service";
 import { OrderByDirection } from "objection";
 
- /**
-   * @swagger
-   *
-   * /login:
-   *   post:
-   *     description: Login to the application
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - name: username
-   *         description: Username to use for login.
-   *         in: formData
-   *         required: true
-   *         type: string
-   *       - name: password
-   *         description: User's password.
-   *         in: formData
-   *         required: true
-   *         type: string
-   *     responses:
-   *       200:
-   *         description: login
-   */
+/**
+ * @swagger
+ * /api/v1/records/{userId}:
+ *   get:
+ *     summary: Get records for a specific user
+ *     description: | 
+ *       Get paginated records for a specific user 
+ *       based on the provided parameters.
+ *     tags:
+ *       - Records
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: |
+ *           ID of the user to retrieve records for.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         description: |
+ *           Page number for pagination (default: 1).
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: itemsPerPage
+ *         required: false
+ *         description: |
+ *           Number of items per page (default: 10).
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: orderBy
+ *         required: false
+ *         description: |
+ *           Field to sort the records by (default: 'id').
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortBy
+ *         required: false
+ *         description: |
+ *           Sort order ('asc' or 'desc', default: 'asc').
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         description: |
+ *           Search term to filter records.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful response with paginated records.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 currentPage:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
+ *                 totalItems:
+ *                   type: integer
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Record' # Assuming you have a schema defined for the Record model
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 const list = async (req: Request, res: Response): Promise<Response> => {
   try {
       const { userId } = req.params;
@@ -46,7 +104,7 @@ const list = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /getRecord/{userId}/{id}:
+ * /api/v1/records/{userId}/{id}:
  *   get:
  *     summary: Get Record
  *     description: Get a single record for the specified user by record ID.

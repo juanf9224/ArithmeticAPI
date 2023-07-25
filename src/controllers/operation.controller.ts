@@ -7,7 +7,7 @@ import { getUserBalanceByUserId, storeNewOperationRecord } from '../services/rec
 
 /**
  * @swagger
- * /calculate/{userId}:
+ * /api/v1/operations/calculate/{userId}:
  *   post:
  *     summary: Calculate Operation
  *     description: Calculate operation for the specified user.
@@ -125,7 +125,7 @@ const calculate = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /list:
+ * /api/v1/operations:
  *   get:
  *     summary: List Operations
  *     description: Get a list of all operations.

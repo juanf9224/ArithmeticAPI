@@ -8,7 +8,7 @@ import { JwtPayload } from "jsonwebtoken";
 
 /**
  * @swagger
- * /login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: User Login
  *     description: Authenticate user with username and password
@@ -28,7 +28,7 @@ import { JwtPayload } from "jsonwebtoken";
  *                 type: string
  *             example:
  *               username: john_doe@mail.com
- *               password: mysecret123
+ *               password: Password.123
  *     responses:
  *       200:
  *         description: User successfully logged in.
@@ -91,8 +91,8 @@ const login = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /logout:
- *   get:
+ * /api/v1/auth/logout:
+ *   post:
  *     summary: User Logout
  *     description: Log out the currently authenticated user
  *     tags:
@@ -180,7 +180,7 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /refreshToken:
+ * /api/v1/auth/refreshToken:
  *   get:
  *     summary: Refresh Access Token
  *     description: Refresh the access token using the provided refresh token

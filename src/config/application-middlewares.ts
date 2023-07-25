@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import express, { Express, NextFunction, Request, Response, json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from '../swagger-docs';
 
 
 /**
@@ -39,6 +41,12 @@ const addExpressMiddleware = (app: Express) => {
         res.setHeader('Access-Control-Allow-Origin', config.clientHost);
         next();
     })
+    // Swagger Docs
+    app.use(
+        "/api/v1/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerDocs)
+    )
 };
 
 export default addExpressMiddleware;

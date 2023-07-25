@@ -4,7 +4,7 @@ import { createUser, deleteUser, findUser, listAllUsers, updateUser } from "../s
 
 /**
  * @swagger
- * /list:
+ * /api/v1/user:
  *   get:
  *     summary: List Users
  *     description: Get a list of all users.
@@ -43,7 +43,7 @@ const list = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /getUser/{id}:
+ * /api/v1/user/{id}:
  *   get:
  *     summary: Get User
  *     description: Get a single user by user ID.
@@ -95,7 +95,7 @@ const getUser = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /create:
+ * /api/v1/user:
  *   post:
  *     summary: Create User
  *     description: Create a new user.
@@ -142,7 +142,7 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /update/{id}:
+ * /api/v1/user/{id}:
  *   put:
  *     summary: Update User
  *     description: Update an existing user by user ID.
@@ -204,7 +204,7 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 
 /**
  * @swagger
- * /remove/{id}:
+ * /api/v1/user/{id}:
  *   delete:
  *     summary: Delete User
  *     description: Delete an existing user by user ID.
