@@ -28,3 +28,13 @@ export const getRecordValidator = (req: Request, res: Response, next: NextFuncti
 
     validateRequest(req, res, next, schema);
 }
+
+export const removeRecordValidator = (req: Request, res: Response, next: NextFunction) => {
+    const schema = Joi.object({
+        params: Joi.object({
+            id: Joi.string().required()
+        })       
+    })
+
+    validateRequest(req, res, next, schema);
+}

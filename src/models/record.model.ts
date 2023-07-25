@@ -2,7 +2,6 @@ import { Id, Model, RelationMappings } from 'objection';
 import Base from './base';
 import { User } from './user.model';
 import { Operation } from './operation.model';
-import { Dayjs } from 'dayjs';
 
 export class Record extends Base {
   id!: Id;
@@ -12,6 +11,7 @@ export class Record extends Base {
   userBalance!: number;
   operationResponse!: string | number;
   date!: Date;
+  deleted!: boolean;
 
   static tableName = 'record';
 

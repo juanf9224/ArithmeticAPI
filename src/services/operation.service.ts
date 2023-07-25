@@ -1,6 +1,10 @@
+import { Status } from "../constants/user.constant";
 import { config } from "../config";
 import { MathOperation, OperationData, OperationType } from "../constants/operation.constant";
 import { Operation } from "../models";
+import { findUser } from "./user.service";
+import { getCreditBalanceByUserId, updateCreditByUserId } from "./credit.service";
+import { storeNewOperationRecord } from "./record.service";
 
 /**
  * Find an operation by its type.
@@ -144,3 +148,40 @@ export const generateRandomString = async (data: OperationData<number>): Promise
  * @returns {Promise<Operation[]>} A promise that resolves to an array of all operations.
  */
 export const listAllOperations = async (): Promise<Operation[]> => await Operation.query();
+
+
+/**
+ * Run a calculation for a specific user based on the operation type and data.
+ *
+ * @param {number} userId - The ID of the user to run the calculation for.
+ * @param {OperationType} type - The type of the operation to perform.
+ * @param {OperationData<number> | MathOperation} data - The data for the operation.
+ * @returns {Promise<string | number>} A promise that resolves to the result of the calculation.
+ * @throws {Error} If the user is inactive, doesn't have enough balance, or an error occurs during the calculation.
+ */
+export const runCalculation = async (userId: number, type: OperationType, data: OperationData<number> | MathOperation): Promise<string | number> => {
+    try {
+        const user = await findUser(userId);
+
+        if (user.status === Status.INACTIVE) {
+        throw new Error('Inactive user');
+        }
+        const op = await findOperationByType(type);
+
+        const credit = await getCreditBalanceByUserId(userId);
+
+        if (!credit || credit.balance < op.cost) {
+            throw new Error("User doesn't have enough balance for this request");
+        }
+
+        const result = await executeOperation(op.type, data);
+
+        await updateCreditByUserId(userId, credit.balance - op.cost);
+        
+        await storeNewOperationRecord(result, op, userId, credit.balance);
+        return result;
+    } catch (error: any) {
+        console.error(`Error trying to run the calculation - message: ${error.message} - stack: ${error.stack}`);
+        throw error;
+    }
+}

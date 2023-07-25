@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { executeOperation, findOperationByType, listAllOperations } from '../services/operation.service';
-import { findUser } from '../services/user.service';
-import { Status } from '../constants/user.constant';
-import { getUserBalanceByUserId, storeNewOperationRecord } from '../services/record.service';
+import { listAllOperations, runCalculation } from '../services/operation.service';
 
 /**
  * @swagger
@@ -81,23 +78,11 @@ import { getUserBalanceByUserId, storeNewOperationRecord } from '../services/rec
  */
 const calculate = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { userId } = req.params;
+    const { userId: uId } = req.params;
     const { type, data } = req.body;
-    const user = await findUser(Number(userId));
-    if (user.status === Status.INACTIVE) {
-      throw new Error('Inactive user');
-    }
-    const op = await findOperationByType(type);
+    const userId = Number(uId);
 
-    const userBalance = await getUserBalanceByUserId(Number(userId));
-
-    if (userBalance < op.cost) {
-      throw new Error("User doesn't have enough balance for this request");
-    }
-
-    const result = await executeOperation(op.type, data);
-
-    await storeNewOperationRecord(result, op, Number(userId), userBalance);
+    const result = await runCalculation(userId, type, data);
 
     return res.status(StatusCodes.OK).json({ data: result });
 

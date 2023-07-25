@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { getRecordByUserIdAndRecordId, listAllRecords } from "../services/record.service";
+import { getRecordByUserIdAndRecordId, listAllRecords, removeRecordById } from "../services/record.service";
 import { OrderByDirection } from "objection";
 
 /**
@@ -162,7 +162,48 @@ const getRecord = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+/**
+ * @swagger
+ * /api/v1/records/remove/{id}:
+ *   delete:
+ *     summary: Soft delete a record by ID
+ *     description: soft delete a record from the database by its ID.
+ *     tags:
+ *       - Records
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the record to remove.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Record successfully removed.
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+const remove = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    console.log('removing record', id)
+    await removeRecordById(Number(id));
+    return res.status(StatusCodes.NO_CONTENT).send();
+  } catch (error: any) {
+    console.error(`Error while trying to remove record with id: ${req.params.id} - message: ${error.message} - stack: ${error.stack}`);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+};
+
 export const RecordController = {
     list,
     getRecord,
+    remove
 }
