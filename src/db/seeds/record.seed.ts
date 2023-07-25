@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { Record } from 'models';
+import { Record } from '../../models';
 
 const now = new Date();
 

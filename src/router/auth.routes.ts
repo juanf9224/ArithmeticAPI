@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('/login', [loginValidator], AuthController.login);
 router.post('/logout', [tokenValidator], AuthController.logout);
-router.get('/refresh-token', [refreshTokenValidator], AuthController.refreshToken);
+router.post('/refresh-token', [refreshTokenValidator], AuthController.refreshToken);
 
 export default router;

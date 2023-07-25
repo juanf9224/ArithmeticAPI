@@ -2,6 +2,14 @@
 
 LoanPro is an arithmetic calculator api to perform simple mathematical operations as well as generate random strings
 
+# Documentation
+
+- To access the api documentation you can check the `v1/api-docs` route where you will see all of our available endpoints with their corresponding documentation using the swagger-js-doc library,
+
+    example:
+
+    `http://localhost:3001/v1/api-docs`
+
 
 # How to install
 

@@ -4,6 +4,7 @@ import factories from "../../factories";
 import { User } from "../../models";
 import { Record } from "../../models/record.model";
 import request from 'supertest';
+import { jwt } from '../../setupTests';
 
 const server = app.listen();
 
@@ -21,7 +22,10 @@ describe('RecordController', () => {
 
             const savedRecord = await Record.query().insert(record1);
 
-            const response = await request(server).get(`/${config.apiVersion}/records/${newUser.id}/${savedRecord.id}`);
+            const response = await request(server)
+            .get(`/api/${config.apiVersion}/records/${newUser.id}/${savedRecord.id}`)
+            .set('Cookie', [`token=${jwt}`])
+            .send();
             expect(response.body.id).toBe(savedRecord.id);
         })
 
@@ -59,8 +63,9 @@ describe('RecordController', () => {
             const lastRecord = await Record.query().insert(record4);
             await Record.query().insert(record5);
             await Record.query().insert(record6);
-
-            const response = await request(server).get(`/${config.apiVersion}/records/${newUser.id}?page=0&itemsPerPage=2&orderBy=id&sortBy=desc`);
+            const response = await request(server)
+            .get(`/api/${config.apiVersion}/records/${newUser.id}?page=0&itemsPerPage=2&orderBy=id&sortBy=desc&search=`)
+            .set('Cookie', [`token=${jwt}`]);
             expect(response.body.total).toBe(4);
             expect(response.body.results.length).toBe(2);
             expect(response.body.results[0].id).toBe(lastRecord.id);

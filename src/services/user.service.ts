@@ -1,8 +1,21 @@
 import { User } from "../models";
 
-export const listAllUsers = async () => await User.query();
+/**
+ * List all users.
+ *
+ * @returns {Promise<User[]>} A promise that resolves to the list of all users.
+ * @throws {Error} If an error occurs while querying the users.
+ */
+export const listAllUsers = async (): Promise<User[]> => await User.query();
 
-export const findUser = async (id: number) => {
+/**
+ * Find a user by ID.
+ *
+ * @param {number} id - The ID of the user to find.
+ * @returns {Promise<User>} A promise that resolves to the found user.
+ * @throws {Error} If no user is found with the provided ID.
+ */ 
+export const findUser = async (id: number): Promise<User> => {
     try {
         const user = await User.query().findById(id);
         if (!user) {
@@ -14,9 +27,29 @@ export const findUser = async (id: number) => {
     }
 }
 
-export const createUser = async (data: User) => await User.query().insert(data);
+/**
+ * Create a new user.
+ *
+ * @param {User} data - The data of the user to create.
+ * @returns {Promise<User>} A promise that resolves to the newly created user.
+ */
+export const createUser = async (data: User): Promise<User> => await User.query().insert(data);
 
-export const updateUser = async (id: number, data: Partial<User>) => await User.query().patchAndFetchById(id, data);
+/**
+ * Update a user by ID.
+ *
+ * @param {number} id - The ID of the user to update.
+ * @param {Partial<User>} data - The partial data of the user to update.
+ * @returns {Promise<User>} A promise that resolves to the updated user.
+ */
+export const updateUser = async (id: number, data: Partial<User>): Promise<User> => await User.query().patchAndFetchById(id, data);
+
+/**
+ * Delete a user by ID.
+ *
+ * @param {number} id - The ID of the user to delete.
+ * @returns {Promise<void>} A promise that resolves when the user is deleted.
+ */
 export const deleteUser = async (id: number): Promise<void> => {
     await User.query().deleteById(id);
 }

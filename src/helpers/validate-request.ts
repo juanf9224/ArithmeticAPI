@@ -2,6 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { Schema } from "joi";
 
+/**
+ * Validate the request payload against the specified schema.
+ *
+ * @param {Request} req - The Express request object.
+ * @param {Response} res - The Express response object.
+ * @param {NextFunction} next - The Express next middleware function.
+ * @param {Joi.Schema} schema - The Joi schema to validate the request payload against.
+ */
 export const validateRequest = (
     req: Request,
     res: Response,
@@ -31,5 +39,4 @@ export const validateRequest = (
     } else {
         next();
     }
-
 };

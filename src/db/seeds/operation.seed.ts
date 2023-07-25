@@ -1,6 +1,6 @@
-import { OperationType } from 'constants/operation.constant';
+import { OperationType } from '../../constants/operation.constant';
 import { Knex } from 'knex';
-import { Operation } from 'models';
+import { Operation } from '../../models';
 
 const now = new Date();
 

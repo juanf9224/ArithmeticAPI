@@ -1,6 +1,6 @@
-import { hashPassword } from 'helpers/passwords';
+import { hashPassword } from '../../helpers/passwords';
 import { Knex } from 'knex';
-import { User } from 'models';
+import { User } from '../../models';
 
 const now = new Date();
 

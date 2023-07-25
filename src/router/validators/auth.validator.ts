@@ -18,27 +18,31 @@ export const tokenValidator = async (req: Request, res: Response, next: NextFunc
         }
         next();
     } catch (error: any) {
+        console.error(`Could not validate authorization token - message: ${error.message} - stack: ${error.stack}`);
         if (error.message.includes('Unauthorized') || error.message.includes('Error verifying token')) {
             return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
         } 
         if (error instanceof TokenExpiredError) {
             return res.status(StatusCodes.UNAUTHORIZED).send(error.message);
         }
+        return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
     }
 };
 
 export const refreshTokenValidator = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { cookies } = req;
-        const token = cookies['Refresh-Token'];
+        const token = cookies.refreshToken;
         if (!token) {
             throw new Error('Unauthorized');
         }
         next();
     } catch (error: any) {
+        console.error(`Could not validate refresh token - message: ${error.message} - stack: ${error.stack}`);
         if (error.message.includes('Unauthorized') || error.message.includes('Error verifying token')) {
             return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
         } 
+        return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized request');
     }
 };
 

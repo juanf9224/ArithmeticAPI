@@ -1,10 +1,13 @@
 import compression from 'compression';
+import { config } from '../config';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dayjs from 'dayjs';
-import express, { Express, json } from 'express';
+import express, { Express, NextFunction, Request, Response, json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from '../swagger-docs';
 
 
 /**
@@ -15,7 +18,13 @@ const addExpressMiddleware = (app: Express) => {
     app.use(helmet());
     app.use(cookieParser());
     app.use(json());
-    app.use(cors());
+    app.use(cors({
+        credentials: true,
+        optionsSuccessStatus: 200,
+        exposedHeaders: 'Set-Cookie',
+        origin: config.clientHost,
+        allowedHeaders: ['Content-Length', 'Accept', 'X-Requested-With', 'Content-Type', 'Authorization'],
+    }));
     app.use(compression());
     app.use(morgan((tokens, req, res) => {
         return [
@@ -28,6 +37,16 @@ const addExpressMiddleware = (app: Express) => {
         ].join(' ');
     }));
     app.use(express.json({ limit: '5mb' }));
+    app.use((req: Request, res: Response, next: NextFunction) => {
+        res.setHeader('Access-Control-Allow-Origin', config.clientHost);
+        next();
+    })
+    // Swagger Docs
+    app.use(
+        "/api/v1/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerDocs)
+    )
 };
 
 export default addExpressMiddleware;

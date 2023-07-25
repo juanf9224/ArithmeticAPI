@@ -1,32 +1,51 @@
-import { config } from '.';
+import { NodeEnv, config } from '.';
 import * as path from 'path';
 import objection from 'objection';
+import { Knex } from 'knex';
 
-const defaultKnexConfig = {
-  client: 'sqlite3',
+console.log(config.env);
+
+const defaultKnexConfig: Knex.Config = {
+  client: 'pg',
   migrations: {
+    extension: config.env === NodeEnv.PRODUCTION ? 'js': 'ts',
     tableName: 'knex_migrations',
-    directory: path.resolve('./db/migrations'),
+    directory: path.resolve('../db/migrations'),
   },
   seeds: {
-    tableName: 'knex_seeds',
-    directory: path.resolve('./db/seeds'),
+    extension: config.env === NodeEnv.PRODUCTION ? 'js': 'ts',
+    directory: path.resolve('../db/seeds'),
   },
   ...objection.knexSnakeCaseMappers(),
-  useNullAsDefault: true, // Required for SQLite
 };
 
 export default {
   development: {
     ...defaultKnexConfig,
-    connection: { filename: config.dbFilename },
+    connection: { 
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword
+ },
   },
   test: {
     ...defaultKnexConfig,
-    connection: { filename: config.dbTestFilename },
+    connection: {
+      connectionString: config.databaseUrl
+    } as Knex.PgConnectionConfig,
   },
   production: {
     ...defaultKnexConfig,
-    connection: { filename: config.dbFilename },
+    connection: {
+      connectionString: config.databaseUrl,
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword,
+      ssl: { rejectUnauthorized: false },
+    } as Knex.PgConnectionConfig,
   },
 };
