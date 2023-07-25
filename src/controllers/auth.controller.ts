@@ -65,7 +65,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
             secure: true,
             sameSite: 'none',
             maxAge: config.tokenExpiresIn,
-            path: '/v1',
+            path: '/api/v1',
             domain: req.get('host')
         })
 
@@ -74,7 +74,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
             secure: true,
             sameSite: 'none',
             maxAge: config.tokenExpiresIn,
-            path: '/v1',
+            path: '/api/v1',
             domain: req.get('host')
         })
         res.setHeader('Set-Cookie', serialized);
@@ -152,7 +152,7 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
             secure: true,
             sameSite: 'none',
             maxAge: config.tokenExpiresIn,
-            path: '/v1',
+            path: '/api/v1',
             domain: req.get('host')
         })
         const serializedRefreshToken = serialize('refreshToken', '', {
@@ -160,7 +160,7 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
             secure: true,
             sameSite: 'none',
             maxAge: config.tokenExpiresIn,
-            path: '/v1',
+            path: '/api/v1',
             domain: req.get('host')
         })
         res.setHeader('Set-Cookie', serialized);
@@ -236,7 +236,7 @@ const refreshToken = async (req: Request, res: Response): Promise<Response> => {
             secure: true,
             sameSite: 'none',
             maxAge: config.tokenExpiresIn,
-            path: '/v1',
+            path: '/api/v1',
             domain: req.get('host')           
         });
         res.setHeader('Set-Cookie', serialized);        
