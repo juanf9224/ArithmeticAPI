@@ -1,14 +1,10 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
+import addExpressMiddleware from './config/application-middlewares';
+import router from './router';
 
 const app = express();
-
 app.disable('etag');
-app.use(express.json());
-app.use((req: Request, res: Response, next: NextFunction) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    next();
-})
+addExpressMiddleware(app);
+app.use(router);
 
 export default app;

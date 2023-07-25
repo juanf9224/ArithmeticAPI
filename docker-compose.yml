@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  app:
+    container_name: LoanProAPI
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - APP_PORT=$APP_PORT
+      - API_VERSION=$API_VERSION
+      - APP_SECRET=$APP_SECRET
+      - RANDOM_API=$RANDOM_API
+      - PGHOST=$PGHOST
+      - PGPORT=$PGPORT
+      - PGDATABASE=$PGDATABASE
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
+    networks:
+      - app_network
+
+  db:
+    container_name: postgres_db
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - "5432:5432" # Map container port 5432 to host port 5432
+    environment:
+      POSTGRES_USER: $PGUSER
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_DB: $PGDATABASE
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+
