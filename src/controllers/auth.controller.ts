@@ -181,7 +181,7 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
 /**
  * @swagger
  * /api/v1/auth/refreshToken:
- *   get:
+ *   post:
  *     summary: Refresh Access Token
  *     description: Refresh the access token using the provided refresh token
  *     tags:
