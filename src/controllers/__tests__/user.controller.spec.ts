@@ -23,7 +23,7 @@ describe('UserController', () => {
       );
 
       const response = await request(server)
-      .get(`/${config.apiVersion}/user`)
+      .get(`/api/${config.apiVersion}/user`)
       .set('Cookie', [`token=${jwt}`])
       .send();
 
@@ -36,7 +36,7 @@ describe('UserController', () => {
       const newUser = await User.query().insert(user);
 
       const response = await request(server)
-      .get(`/${config.apiVersion}/user/${newUser.id}`)
+      .get(`/api/${config.apiVersion}/user/${newUser.id}`)
       .set('Cookie', [`token=${jwt}`])
       .send();
 
@@ -46,7 +46,7 @@ describe('UserController', () => {
     test('should create a user', async () => {
       const user = factories.user.build();
 
-      const response = await request(server).post(`/${config.apiVersion}/user`)
+      const response = await request(server).post(`/api/${config.apiVersion}/user`)
             .set('Cookie', [`token=${jwt}`])
             .send(user);
 
@@ -59,7 +59,7 @@ describe('UserController', () => {
       const newUser = await User.query().insert(user);
       
       const newStatus = newUser.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
-      const response = await request(server).put(`/${config.apiVersion}/user/${newUser.id}`)
+      const response = await request(server).put(`/api/${config.apiVersion}/user/${newUser.id}`)
             .set('Cookie', [`token=${jwt}`])
             .send({
               status: newStatus
@@ -74,7 +74,7 @@ describe('UserController', () => {
       const newUser = await User.query().insert(user);
 
       const response = await request(server)
-      .delete((`/${config.apiVersion}/user/${newUser.id}`))
+      .delete((`/api/${config.apiVersion}/user/${newUser.id}`))
       .set('Cookie', [`token=${jwt}`])
       .send();
 

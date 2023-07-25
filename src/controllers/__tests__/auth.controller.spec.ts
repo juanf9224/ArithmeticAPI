@@ -25,7 +25,7 @@ describe('AuthController', () => {
             await User.query().insert(withHashedPassword);
     
             const response = await request(server)
-            .post(`/${config.apiVersion}/auth/login`)
+            .post(`/api/${config.apiVersion}/auth/login`)
             .send({
                 username: user.username,
                 password: user.password
@@ -39,8 +39,9 @@ describe('AuthController', () => {
 
         test('should refresh token successfully', async () => {    
             const response = await request(server)
-            .get(`/${config.apiVersion}/auth/refresh-token`)
-            .set('Cookie', [`refreshToken=${jwt}`]);
+            .post(`/api/${config.apiVersion}/auth/refresh-token`)
+            .set('Cookie', [`refreshToken=${jwt}`])
+            .send();
             const decoded = (await verifyToken(jwt) as JwtPayload);
             expect(response.status).toBe(StatusCodes.OK);
             expect(response.body.username).toBe(decoded.user.username);

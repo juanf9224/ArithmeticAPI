@@ -43,7 +43,7 @@ describe('OperationController', () => {
                 valueB: 325720.55
             };
             const response = await request(server)
-            .post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)
+            .post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)
             .set('Cookie', [`token=${jwt}`])
             .send({
                 type: OperationType.ADDITION,
@@ -80,7 +80,7 @@ describe('OperationController', () => {
                 valueA: 5000,
                 valueB: 1000
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.SUBSTRACTION,
                 data
@@ -117,7 +117,7 @@ describe('OperationController', () => {
                 valueB: 100
             };
             const response = await request(server)
-            .post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            .post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`])
             .send({
                 type: OperationType.MULTIPLICATION,
@@ -154,7 +154,7 @@ describe('OperationController', () => {
                 valueA: 150,
                 valueB: 15
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.DIVISION,
                 data
@@ -189,7 +189,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 80
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.SQUARE_ROOT,
                 data
@@ -232,7 +232,7 @@ describe('OperationController', () => {
             )
 
             const response = await request(server)
-            .post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            .post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`])
             .send({
                 type: OperationType.RANDOM_STRING,
@@ -273,7 +273,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.ADDITION,
                 data
@@ -307,7 +307,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.SUBSTRACTION,
                 data
@@ -341,7 +341,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.MULTIPLICATION,
                 data
@@ -375,7 +375,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.DIVISION,
                 data
@@ -409,7 +409,7 @@ describe('OperationController', () => {
             const data = {
                 valueA: 5020.65,
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.ADDITION,
                 data
@@ -443,7 +443,7 @@ describe('OperationController', () => {
     
             const data = {
             };
-            const response = await request(server).post(`/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
+            const response = await request(server).post(`/api/${config.apiVersion}/operations/${dbUser.id}/calculate`)            
             .set('Cookie', [`token=${jwt}`]).send({
                 type: OperationType.SQUARE_ROOT,
                 data

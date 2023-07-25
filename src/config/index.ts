@@ -27,6 +27,7 @@ interface Env {
   dbPassword: string;
   refreshTokenExpiresIn: number;
   clientHost: string;
+  testDbFilename: string;
 }
 
 const getDbCredentials = (env: string) => {
@@ -55,7 +56,7 @@ const getDbCredentials = (env: string) => {
         dbPort: Number(process.env.PGPORT) || 5432,
         database: process.env.PGDATABASE || 'LoanProDev',
         dbUser: process.env.PGUSER || 'postgres',
-        dbPassword: process.env.PGPASSWORD || 'loanprodev.123'
+        dbPassword: process.env.PGPASSWORD || 'loanprodev.123',
       }
     }
   }
@@ -74,5 +75,6 @@ export const config: Env = {
   databaseUrl: process.env.databaseUrl || '',
   ...getDbCredentials(process.env.NODE_ENV || 'development'),
   refreshTokenExpiresIn: Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 86400,
-  clientHost: process.env.CLIENT_HOST || 'http://localhost:3000'
+  clientHost: process.env.CLIENT_HOST || 'http://localhost:3000',
+  testDbFilename: process.env.TEST_DB_FILENAME || './../../db.test.sqlite3',
 };

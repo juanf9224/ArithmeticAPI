@@ -17,7 +17,6 @@ const defaultKnexConfig: Knex.Config = {
     directory: path.resolve('../db/seeds'),
   },
   ...objection.knexSnakeCaseMappers(),
-  useNullAsDefault: true, // Required for SQLite
 };
 
 export default {
@@ -33,13 +32,9 @@ export default {
   },
   test: {
     ...defaultKnexConfig,
-    connection: { 
-      host: config.host,
-      port: config.dbPort,
-      database: config.database,
-      user: config.dbUser,
-      password: config.dbPassword
-    },
+    connection: {
+      connectionString: config.databaseUrl
+    }as Knex.PgConnectionConfig,
   },
   production: {
     ...defaultKnexConfig,

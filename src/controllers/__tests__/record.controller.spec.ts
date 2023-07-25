@@ -23,7 +23,7 @@ describe('RecordController', () => {
             const savedRecord = await Record.query().insert(record1);
 
             const response = await request(server)
-            .get(`/${config.apiVersion}/records/${newUser.id}/${savedRecord.id}`)
+            .get(`/api/${config.apiVersion}/records/${newUser.id}/${savedRecord.id}`)
             .set('Cookie', [`token=${jwt}`])
             .send();
             expect(response.body.id).toBe(savedRecord.id);
@@ -64,7 +64,7 @@ describe('RecordController', () => {
             await Record.query().insert(record5);
             await Record.query().insert(record6);
             const response = await request(server)
-            .get(`/${config.apiVersion}/records/${newUser.id}?page=0&itemsPerPage=2&orderBy=id&sortBy=desc&search=`)
+            .get(`/api/${config.apiVersion}/records/${newUser.id}?page=0&itemsPerPage=2&orderBy=id&sortBy=desc&search=`)
             .set('Cookie', [`token=${jwt}`]);
             expect(response.body.total).toBe(4);
             expect(response.body.results.length).toBe(2);
