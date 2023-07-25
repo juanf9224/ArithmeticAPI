@@ -12,7 +12,7 @@
     "clean-build": "rimraf build/",
     "preinstall": "npx check-engine",
     "ts-node": "cross-env NODE_OPTIONS=\"--loader=ts-node/esm --no-warnings --experimental-specifier-resolution=node\" node",
-    "start": "cross-env NODE_ENV=production NODE_PATH=build node start build/index.js",
+    "start": "cross-env NODE_ENV=production NODE_PATH=build node build/index.js",
     "dev": "cross-env HTTPS=true NODE_ENV=development nodemon",
     "lint": "eslint src",
     "prettier": "./node_modules/.bin/prettier --write \"{src,knex}/**/*.ts\"",
