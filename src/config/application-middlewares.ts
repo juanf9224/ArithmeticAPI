@@ -21,7 +21,7 @@ const addExpressMiddleware = (app: Express) => {
     app.use(cors({
         credentials: true,
         optionsSuccessStatus: 200,
-        exposedHeaders: 'set-cookie',
+        exposedHeaders: 'Set-Cookie',
         origin: config.clientHost,
         allowedHeaders: ['Content-Length', 'Accept', 'X-Requested-With', 'Content-Type', 'Authorization'],
     }));
