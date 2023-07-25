@@ -11,6 +11,11 @@ LoanPro is an arithmetic calculator api to perform simple mathematical operation
     `http://localhost:3001/v1/api-docs`
 
 
+- Authentication and authorization is done by implementing json web token, with access tokens and refresh tokens stored in secured http only cookies.
+
+- The selected Database for this project is Postgres together with Knex for building queries.
+
+
 # How to install
 
 1. (Optional) Use nvm to [install](https://github.com/nvm-sh/nvm#usage) and use the Node version on the API project
