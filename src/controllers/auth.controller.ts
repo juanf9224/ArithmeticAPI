@@ -77,8 +77,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
             path: '/api/v1',
             domain: req.get('host')
         })
-        res.setHeader('Set-Cookie', serialized);
-        res.setHeader('Refresh-Token', serializedRefreshToken);
+        res.setHeader('Set-Cookie', [serialized, serializedRefreshToken]);
         return res.status(StatusCodes.OK).json(user);
     } catch (error: any) {
         console.error(`Error while trying to get user with id: ${req.params.id} - message: ${error.message} - stack: ${error.stack}`);
@@ -163,8 +162,7 @@ const logout = async (req: Request, res: Response): Promise<Response> => {
             path: '/api/v1',
             domain: req.get('host')
         })
-        res.setHeader('Set-Cookie', serialized);
-        res.setHeader('Refresh-Token', serializedRefreshToken);     
+        res.setHeader('Set-Cookie', [serialized, serializedRefreshToken]);
         return res.status(StatusCodes.OK).send({
             status: 'success',
             message: 'Logged out'
