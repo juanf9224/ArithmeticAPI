@@ -2,7 +2,7 @@ import app from '../../app';
 import request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import factories from "../../factories";
-import { Operation, Record, User } from "../../models";
+import { Credit, Operation, Record, User } from "../../models";
 import { config } from '../../config';
 import { OperationType } from '../../constants/operation.constant';
 import { Status } from '../../constants/user.constant';
@@ -20,18 +20,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.ADDITION,
@@ -58,18 +48,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.SUBSTRACTION,
@@ -94,18 +74,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.MULTIPLICATION,
@@ -132,18 +102,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.DIVISION,
@@ -168,18 +128,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.SQUARE_ROOT,
@@ -203,18 +153,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.RANDOM_STRING,
@@ -252,18 +192,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.ADDITION,
@@ -286,18 +216,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.SUBSTRACTION,
@@ -320,18 +240,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.MULTIPLICATION,
@@ -354,18 +264,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.DIVISION,
@@ -388,18 +288,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 5
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 0
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 0 });
             
             const operation = factories.operation.build({
                 type: OperationType.ADDITION,
@@ -423,18 +313,8 @@ describe('OperationController', () => {
                 status: Status.ACTIVE
             });
             const dbUser = await User.query().insert(user);
-
-            const record1 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-            const record2 = factories.record.build({
-                user_id: Number(dbUser.id),
-                userBalance: 200
-            });
-
-            await Record.query().insert(record1);
-            await Record.query().insert(record2);
+            
+            await Credit.query().insert({ user_id: Number(dbUser.id), balance: 200 });
             
             const operation = factories.operation.build({
                 type: OperationType.SQUARE_ROOT,

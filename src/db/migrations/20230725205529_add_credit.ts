@@ -8,7 +8,7 @@ export const up = async (knex: Knex): Promise<void> => {
       table.increments();
       table.timestamps();
       table.string('user_id').notNullable().unique();
-      table.string('balance').notNullable();    
+      table.integer('balance').notNullable();    
     });
   } else {
     console.log("Table Credit already exists, skipping...");

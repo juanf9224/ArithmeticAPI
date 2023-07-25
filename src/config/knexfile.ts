@@ -34,7 +34,7 @@ export default {
     ...defaultKnexConfig,
     connection: {
       connectionString: config.databaseUrl
-    }as Knex.PgConnectionConfig,
+    } as Knex.PgConnectionConfig,
   },
   production: {
     ...defaultKnexConfig,
