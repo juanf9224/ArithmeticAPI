@@ -36,8 +36,8 @@ const getDbCredentials = (env: string) => {
       return {
         host: process.env.PGHOST || '',
         dbPort: Number(process.env.PGPORT) || 5432,
-        database: process.env.PGDATABASE || 'LoanPro',
-        dbUser: process.env.PGUSER || 'postgres',
+        database: process.env.PGDATABASE || '',
+        dbUser: process.env.PGUSER || '',
         dbPassword: process.env.PGPASSWORD || ''
       }
     }
@@ -72,7 +72,7 @@ export const config: Env = {
   appSecret: process.env.APP_SECRET || 'NO_SECRET',
   tokenExpiresIn: Number(process.env.TOKEN_EXPIRES_IN) || 3600,
   randomApi: process.env.RANDOM_API || 'https://www.random.org/',  
-  databaseUrl: process.env.databaseUrl || '',
+  databaseUrl: process.env.DATABASE_URL || '',
   ...getDbCredentials(process.env.NODE_ENV || 'development'),
   refreshTokenExpiresIn: Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 86400,
   clientHost: process.env.CLIENT_HOST || 'http://localhost:3000',
