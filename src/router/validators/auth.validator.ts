@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { TokenExpiredError } from 'jsonwebtoken';
-import { verifyToken } from "../../helpers/jwt";
+import { verifyToken } from "../../helpers/jwt.helper";
 import Joi from "joi";
-import { validateRequest } from "../../helpers/validate-request";
+import { validateRequest } from "../../helpers/validate.helper";
 
 export const tokenValidator = async (req: Request, res: Response, next: NextFunction) => {
     try {

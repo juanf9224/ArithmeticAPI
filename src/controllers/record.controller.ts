@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { getRecordByUserIdAndRecordId, listAllRecords, removeRecordById } from "../services/record.service";
 import { OrderByDirection } from "objection";
+import { Record } from "models";
+import { formatPaginatedResultDates } from "../helpers/format.helper";
+import { RecordColumn } from "../constants/record.constant";
 
 /**
  * @swagger
@@ -87,6 +90,7 @@ import { OrderByDirection } from "objection";
 const list = async (req: Request, res: Response): Promise<Response> => {
   try {
       const { userId } = req.params;
+    console.log(`Fetching list of records for user: ${userId}`);
       const { page, itemsPerPage, orderBy, sortBy, search } = req.query;
       const recordsPage = await listAllRecords(Number(userId), {
           page: Number(page),
@@ -95,7 +99,9 @@ const list = async (req: Request, res: Response): Promise<Response> => {
           sortBy: String(sortBy) as OrderByDirection,
           search: String(search)
       });
-      return res.status(StatusCodes.OK).send(recordsPage);
+
+      const withFormattedDates = formatPaginatedResultDates<Record>(recordsPage, RecordColumn.DATE);
+      return res.status(StatusCodes.OK).send(withFormattedDates);
   } catch (error: any) {
       console.error(`Error while trying to get records - message: ${error.message} - stack: ${error.stack}`);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -193,7 +199,7 @@ const getRecord = async (req: Request, res: Response): Promise<Response> => {
 const remove = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
-    console.log('removing record', id)
+    console.log(`removing record: ${id}`);
     await removeRecordById(Number(id));
     return res.status(StatusCodes.NO_CONTENT).send();
   } catch (error: any) {

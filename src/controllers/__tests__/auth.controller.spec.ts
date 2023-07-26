@@ -4,9 +4,9 @@ import { StatusCodes } from 'http-status-codes';
 import factories from "../../factories";
 import { User } from "../../models";
 import { config } from '../../config';
-import { hashPassword } from '../../helpers/passwords';
+import { hashPassword } from '../../helpers/passwords.helper';
 import { jwt } from '../../setupTests';
-import { verifyToken } from '../../helpers/jwt';
+import { verifyToken } from '../../helpers/jwt.helper';
 import { JwtPayload } from 'jsonwebtoken';
 
 const server = app.listen();

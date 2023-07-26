@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { loginService } from "../services/auth.service";
 import { serialize } from 'cookie';
 import { config } from "../config";
-import { jwtSign, verifyToken } from "../helpers/jwt";
+import { jwtSign, verifyToken } from "../helpers/jwt.helper";
 import { JwtPayload } from "jsonwebtoken";
 
 /**

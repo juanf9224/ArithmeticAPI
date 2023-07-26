@@ -1,4 +1,4 @@
-import { hashPassword } from '../../helpers/passwords';
+import { hashPassword } from '../../helpers/passwords.helper';
 import { Knex } from 'knex';
 import { User } from '../../models';
 

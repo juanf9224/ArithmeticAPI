@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { validateRequest } from "../../helpers/validate-request";
+import { validateRequest } from "../../helpers/validate.helper";
 
 export const listRecordsValidator = (req: Request, res: Response, next: NextFunction) => {
     const schema = Joi.object({

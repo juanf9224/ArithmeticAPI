@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { validateRequest } from "../../helpers/validate-request";
+import { validateRequest } from "../../helpers/validate.helper";
 import { OperationType } from "../../constants/operation.constant";
 
 const validateValue = (value: any, helper: Joi.CustomHelpers, type: string) => {

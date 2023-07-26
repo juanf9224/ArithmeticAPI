@@ -1,6 +1,6 @@
 import { config } from "../config";
-import { jwtSign } from "../helpers/jwt";
-import { isCorrectPassword } from "../helpers/passwords";
+import { jwtSign } from "../helpers/jwt.helper";
+import { isCorrectPassword } from "../helpers/passwords.helper";
 import { User } from "../models";
 
 interface LoginResponse {
