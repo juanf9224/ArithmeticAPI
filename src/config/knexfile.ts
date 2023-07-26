@@ -22,30 +22,32 @@ const defaultKnexConfig: Knex.Config = {
 export default {
   development: {
     ...defaultKnexConfig,
-    connection: { 
+    connection: config.databaseUrl || { 
       host: config.host,
       port: config.dbPort,
       database: config.database,
       user: config.dbUser,
       password: config.dbPassword
- },
+    },
   },
   test: {
     ...defaultKnexConfig,
-    connection: {
-      connectionString: config.databaseUrl
-    } as Knex.PgConnectionConfig,
-  },
-  production: {
-    ...defaultKnexConfig,
-    connection: {
-      connectionString: config.databaseUrl,
+    connection: config.databaseUrl || config.databaseUrl || { 
       host: config.host,
       port: config.dbPort,
       database: config.database,
       user: config.dbUser,
-      password: config.dbPassword,
-      ssl: { rejectUnauthorized: false },
-    } as Knex.PgConnectionConfig,
+      password: config.dbPassword
+    },
+  },
+  production: {
+    ...defaultKnexConfig,
+    connection: config.databaseUrl || { 
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword
+    },
   },
 };
