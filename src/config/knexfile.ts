@@ -3,9 +3,22 @@ import * as path from 'path';
 import objection from 'objection';
 import { Knex } from 'knex';
 
-console.log(config.env);
+console.log(`Running in mode: ${config.env}`);
 
-const defaultKnexConfig: Knex.Config = {
+const shouldUseSSL = config.env === NodeEnv.PRODUCTION ? { rejectUnauthorized: false } : false;
+const connection: Knex.PgConnectionConfig = config.databaseUrl ? {
+    connectionString: config.databaseUrl,
+    ssl: shouldUseSSL,
+} : {
+      host: config.host,
+      port: config.dbPort,
+      database: config.database,
+      user: config.dbUser,
+      password: config.dbPassword,
+      ssl: shouldUseSSL,
+};
+
+export default {
   client: 'pg',
   migrations: {
     extension: config.env === NodeEnv.PRODUCTION ? 'js': 'ts',
@@ -17,37 +30,5 @@ const defaultKnexConfig: Knex.Config = {
     directory: path.resolve('../db/seeds'),
   },
   ...objection.knexSnakeCaseMappers(),
-};
-
-export default {
-  development: {
-    ...defaultKnexConfig,
-    connection: config.databaseUrl || { 
-      host: config.host,
-      port: config.dbPort,
-      database: config.database,
-      user: config.dbUser,
-      password: config.dbPassword
-    },
-  },
-  test: {
-    ...defaultKnexConfig,
-    connection: config.databaseUrl || config.databaseUrl || { 
-      host: config.host,
-      port: config.dbPort,
-      database: config.database,
-      user: config.dbUser,
-      password: config.dbPassword
-    },
-  },
-  production: {
-    ...defaultKnexConfig,
-    connection: config.databaseUrl || { 
-      host: config.host,
-      port: config.dbPort,
-      database: config.database,
-      user: config.dbUser,
-      password: config.dbPassword
-    },
-  },
-};
+  connection
+} as Knex.Config;

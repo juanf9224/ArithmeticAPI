@@ -87,7 +87,7 @@ const calculate = async (req: Request, res: Response): Promise<Response> => {
     return res.status(StatusCodes.OK).json({ data: result });
 
   } catch (error: any) {
-    console.log(`Error while trying to calculate operation for user id: ${req.params.userId} - message: ${error.message} - stack: ${error.stack}`);
+    console.error(`Error while trying to calculate operation for user id: ${req.params.userId} - message: ${error.message} - stack: ${error.stack}`);
     if (error.message.includes('Operation Not Found')){
       return res.status(StatusCodes.NOT_FOUND).send(error.message);
     }

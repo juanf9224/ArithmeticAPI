@@ -22,7 +22,7 @@ const validateValue = (value: any, helper: Joi.CustomHelpers, type: string) => {
         }
         return value;
     } catch (error: any) {
-        console.log(`Could not validate value - message: ${error.message} - stack: ${error.stack}`);
+        console.error(`Could not validate value - message: ${error.message} - stack: ${error.stack}`);
         return helper.error('any.invalid');
     }
 }
