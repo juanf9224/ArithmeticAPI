@@ -13,40 +13,42 @@ import { Record } from "../models/record.model";
  */
 export const listAllRecords = async (userId: number, meta: IMeta): Promise<Page<Record>> => {
     try {
+        const defaultWhere = {
+            user_id: userId,
+            deleted: false
+        }
         if (meta?.search) {
             if (Number(meta.search)) {
                 return await Record.query()
-                .where({
-                    user_id: userId,
-                    deleted: false
-                })
+                .where(defaultWhere)
                 .andWhere({
+                    ...defaultWhere,
                     operationResponse: `${meta.search}`
                 })
                 .orWhere({
+                    ...defaultWhere,
                     operation_id: meta.search
                 })
                 .orWhere({
+                    ...defaultWhere,
                     amount: meta.search
                 })
                 .orWhere({
+                    ...defaultWhere,
                     userBalance: meta.search
                 })
                 .orderBy( meta.orderBy || 'id', meta.sortBy || 'desc')
                 .page(meta.page, meta.itemsPerPage);
             }
             return await Record.query()
-            .where({
-                user_id: userId,
-                deleted: false
-            })
+            .where(defaultWhere)
             .andWhere("operationResponse", 'ilike', `%${meta.search}%`)
             .orderBy( meta.orderBy || 'id', meta.sortBy || 'desc')
             .page(meta.page, meta.itemsPerPage);
         }
-         
+        
         return await Record.query()
-        .where({ user_id: userId, deleted: false })
+        .where(defaultWhere)
         .orderBy(meta.orderBy || 'id', meta.sortBy || 'desc')
         .page(meta.page, meta.itemsPerPage);
     } catch (error: any) {
